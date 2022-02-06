@@ -12,16 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(
-            '앱임',
-          ),
+          title: Text("앱 타이틀"),
+          actions: [Icon(Icons.star), Icon(Icons.star)],
         ),
-        body: SizedBox(
-          child: IconButton(
-            icon: Icon(Icons.star),
-            onPressed: () {},
-          )
-        )
+        body: SizedBox()
       )
     );
   }
