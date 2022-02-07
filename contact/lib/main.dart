@@ -12,27 +12,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(),
-        body: ListView(
-          children: [
-            Row(
-              children: [
-                Icon(Icons.sentiment_satisfied_alt),
-                Text("홍길동")
-              ],
-            ),
-            Row(
-              children: [
-                Icon(Icons.sentiment_satisfied_alt),
-                Text("홍길동")
-              ],
-            ),
-            Row(
-              children: [
-                Icon(Icons.sentiment_satisfied_alt),
-                Text("홍길동")
-              ],
-            )
-          ]
+        body: ListView.builder(
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Image.asset("dog.webp"),
+              title: Text("함사랑"),
+            );
+          },
         ),
         bottomNavigationBar: BottomNavBar(),
       )
