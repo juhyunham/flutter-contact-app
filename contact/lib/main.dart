@@ -11,27 +11,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var a = 1;
+  var name = ['김영숙', '홍길동', '피자집'];
+  var like = [0, 0, 0];
 
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Text(a.toString()),
-          onPressed: (){
-            setState((){
-              a++;
-            });
-          },),
         appBar: AppBar(title: Text('연락처 앱')),
         body: ListView.builder(
           itemCount: 3,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Image.asset("dog.webp"),
-              title: Text("함사랑"),
+              leading: Text(like[index].toString()),
+              title: Text(name[index]),
+              trailing: IconButton(
+                onPressed: (){
+                  setState(() {
+                    like[index]++;
+                  });
+                }, 
+                icon: Icon(Icons.favorite))
             );
           },
         ),
