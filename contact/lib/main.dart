@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:core';
 
 void main() {
   runApp( MaterialApp(
@@ -13,8 +14,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var name = ['김영숙', '홍길동', '피자집'];
+  var total = 3;
+  var name = <String>['김영숙', '홍길동', '피자집'];
   var like = [0, 0, 0];
+
+  addName(user) {
+    setState(() {
+      name.add(user);
+    });
+  }
+
+  addOne() {
+    setState(() {
+      total++;
+    });
+  }
 
   @override
   Widget build(BuildContext contactContext) {
@@ -23,39 +37,24 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             showDialog(context: contactContext, builder: (context) {
-                return AlertDialog (
-                  title: Text("팝업 메시지"),
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: [
-                          TextField()
-                        ]
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        child: Text("CANCEL"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: Text("OK"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ]
-                );
+                return DialogUI(addOne: addOne, addName: addName);
             });
-          }
+          },
+          child: Text("등록")
         ),
-        appBar: AppBar(title: Text('연락처 앱')),
+        appBar: AppBar(
+          title: Center(
+            child: Row(
+              children: [
+                Text("연락처 앱"),
+                Text(name.length.toString()+'명'),
+              ],)),
+          backgroundColor: Color.fromARGB(255, 77, 160, 61),
+        ),
         body: ListView.builder(
-          itemCount: 3,
+          itemCount: name.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Text(like[index].toString()),
               title: Text(name[index]),
               trailing: IconButton(
                 onPressed: (){
@@ -91,5 +90,42 @@ class BottomNavBar extends StatelessWidget {
       )
       
     );
+  }
+}
+
+class DialogUI extends StatelessWidget {
+  DialogUI({ Key? key, this.addOne, this.addName }) : super(key: key);
+
+  var inputData = TextEditingController();
+  final addOne;
+  final addName;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog (
+        title: Text("등록할 친구를 입력하세요."),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+                TextField( controller: inputData,)
+              ]
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text("취소"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("등록"),
+              onPressed: () {
+                addOne();
+                addName(inputData.text);
+              },
+            )
+          ]
+      );
   }
 }
