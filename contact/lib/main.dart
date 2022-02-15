@@ -14,8 +14,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var total = 3;
   var name = <String>['김영숙', '홍길동', '피자집'];
   var like = [0, 0, 0];
+
+  addName(user) {
+    setState(() {
+      name.add(user);
+    });
+  }
+
+  addOne() {
+    setState(() {
+      total++;
+    });
+  }
 
   @override
   Widget build(BuildContext contactContext) {
@@ -24,7 +37,7 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             showDialog(context: contactContext, builder: (context) {
-                return DialogUI();
+                return DialogUI(addOne: addOne, addName: addName);
             });
           },
           child: Text("등록")
@@ -39,10 +52,9 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Color.fromARGB(255, 77, 160, 61),
         ),
         body: ListView.builder(
-          itemCount: 3,
+          itemCount: name.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Text(like[index].toString()),
               title: Text(name[index]),
               trailing: IconButton(
                 onPressed: (){
@@ -82,7 +94,11 @@ class BottomNavBar extends StatelessWidget {
 }
 
 class DialogUI extends StatelessWidget {
-  const DialogUI({ Key? key }) : super(key: key);
+  DialogUI({ Key? key, this.addOne, this.addName }) : super(key: key);
+
+  var inputData = TextEditingController();
+  final addOne;
+  final addName;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +107,7 @@ class DialogUI extends StatelessWidget {
         content: SingleChildScrollView(
           child: ListBody(
             children: [
-                TextField()
+                TextField( controller: inputData,)
               ]
             ),
           ),
@@ -105,7 +121,8 @@ class DialogUI extends StatelessWidget {
             TextButton(
               child: Text("등록"),
               onPressed: () {
-                Navigator.of(context).pop();
+                addOne();
+                addName(inputData.text);
               },
             )
           ]
